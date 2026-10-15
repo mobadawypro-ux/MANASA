@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, ZoomIn, Download, ChevronRight, ChevronLeft } from 'lucide-react';
+import { X, ZoomIn, Download, ChevronRight, ChevronLeft, Edit2 } from 'lucide-react';
 import { SlideImage } from '../types/report';
 
 interface LightboxModalProps {
@@ -8,6 +8,7 @@ interface LightboxModalProps {
   isOpen: boolean;
   onClose: () => void;
   onNavigate: (newIndex: number) => void;
+  onEdit?: (image: SlideImage) => void;
 }
 
 export const LightboxModal: React.FC<LightboxModalProps> = ({
@@ -15,7 +16,8 @@ export const LightboxModal: React.FC<LightboxModalProps> = ({
   currentIndex,
   isOpen,
   onClose,
-  onNavigate
+  onNavigate,
+  onEdit
 }) => {
   if (!isOpen || images.length === 0) return null;
   const currentImage = images[currentIndex] || images[0];
@@ -47,6 +49,19 @@ export const LightboxModal: React.FC<LightboxModalProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
+          {onEdit && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+                onEdit(currentImage);
+              }}
+              className="p-2 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 transition cursor-pointer font-bold shadow"
+              title="تعديل بيانات هذه الصورة"
+            >
+              <Edit2 className="w-4 h-4" />
+            </button>
+          )}
           <a
             href={currentImage.url}
             download={`photo-${currentIndex + 1}.jpg`}

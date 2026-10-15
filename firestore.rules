@@ -1,0 +1,69 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() && request.auth.token.email.lower() == 'mobadawypro@gmail.com';
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidUser(data, userId) {
+      return data.id is string && data.id == userId
+        && data.email is string && data.email.size() <= 200;
+    }
+
+    function isValidReport(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.ownerId is string && data.ownerId == request.auth.uid
+        && data.title is string && data.title.size() <= 200
+        && data.reportData is string && data.reportData.size() <= 900000;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidId(userId) && isValidUser(incoming(), userId);
+      allow update: if isOwner(userId) && isValidId(userId) && isValidUser(incoming(), userId)
+        && incoming().id == existing().id;
+      allow delete: if false;
+    }
+
+    // Reports Collection (Readable and writable by any signed-in user/admin)
+    match /reports/{reportId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Public App Branding & Logo (Readable and writable for universal sync across all devices)
+    match /public_config/{configId} {
+      allow read, write: if true;
+    }
+
+    // Shared Master Report (Readable and writable by anyone/visitors on any device so phone & PC stay 100% in sync)
+    match /shared_reports/{reportId} {
+      allow read, write: if true;
+    }
+  }
+}

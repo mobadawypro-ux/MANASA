@@ -1,3 +1,6 @@
+import { NEW_BOQ_ITEMS } from './newBoqItems';
+import { INITIAL_PROJECT_FILES, DEFAULT_FILE_CATEGORIES } from './initialProjectFiles';
+import { UNIFIED_SCHEDULE_ITEMS } from './unifiedScheduleItems';
 import { ReportData } from '../types/report';
 
 export const INITIAL_REPORT_DATA: ReportData = {
@@ -6,589 +9,42 @@ export const INITIAL_REPORT_DATA: ReportData = {
     subLocation: 'مجمع مصانع الشركة الوطنية للأسمنت ببنى سويف',
     contractor: 'شركة الهلال للمقاولات العمومية',
     contractNumber: 'أمر إسناد رقم 24/2026',
-    projectTitle: 'الموقف التنفيذي لإنشاء عدد 2 هنجر 40*100 وهنجر اصلاح للمعدات 52*20 م ومغسلة للمعدات',
-    handoverDate: '2026/07/08',
-    durationMonths: 8,
-    plannedEndDate: '2027/03/08',
-    reportDate: '2026/09/13',
+    consultant: 'الأكاديمية العربية للعلوم والتكنولوجيا والنقل البحري - شركة الأكاديمية لتكنولوجيا المعلومات والاتصالات',
+    projectTitle: 'مشروع إنشاء عدد (2) هنجر بمصنع الشكاير - عدد (1) هنجر بمصنع المعدات - عدد (1) مغسلة بمصنع المعدات',
+    handoverDate: '2026/08/01',
+    durationMonths: 5,
+    plannedEndDate: '2026/12/31',
+    reportDate: '2026/10/15',
     overallProgress: 16,
-    notes: 'تم البدء في أعمال الحفر والإحلال وصب القواعد العادية والعزل وبدء حدادة القواعد المسلحة وفقاً للجدول الزمني المعتمد.'
+    notes: 'البرنامج الزمني المعتمد بتاريخ 2026/8/1 ومدة تنفيذ المشروع خمسة أشهر حتى 2026/12/31.'
   },
-  boqItems: [
-    // 1. أعمال الحفر والردم
-    {
-      id: 'boq-1',
-      category: 'أعمال الحفر والردم',
-      statement: 'حفر للأساسات في تربة صخرية أو رملية',
-      unit: 'م٣',
-      totalQuantity: 3250,
-      executedQuantity: 2750,
-      executionPercentage: 85,
-      notes: 'تم تنفيذ الحفر حتى المناسيب التصميمية'
-    },
-    {
-      id: 'boq-2',
-      category: 'أعمال الحفر والردم',
-      statement: 'ردم بتربة رملية معتمدة على طبقات مع الدمك والغمر',
-      unit: 'م٣',
-      totalQuantity: 2000,
-      executedQuantity: 550,
-      executionPercentage: 28,
-      notes: 'جاري استكمال طبقات الردم والإحلال'
-    },
-    // 2. أعمال الخرسانة
-    {
-      id: 'boq-3',
-      category: 'أعمال الخرسانة',
-      statement: 'خرسانة عادية للأساسات سمك مناسب',
-      unit: 'م٣',
-      totalQuantity: 465,
-      executedQuantity: 300,
-      executionPercentage: 65,
-      notes: 'تم صب الجزء الأكبر من خرسانة الأساسات العادية'
-    },
-    {
-      id: 'boq-4',
-      category: 'أعمال الخرسانة',
-      statement: 'خرسانة مسلحة للأساسات ورقاب الأعمدة والسملات',
-      unit: 'م٣',
-      totalQuantity: 670,
-      executedQuantity: 200,
-      executionPercentage: 30,
-      notes: 'جاري استكمال أعمال الحدادة والصب'
-    },
-    {
-      id: 'boq-5',
-      category: 'أعمال الخرسانة',
-      statement: 'توريد وعمل ترابيع خرسانية ومسلحة بالفايبر البولي بروبلين لأرضيات الهناجر',
-      unit: 'م٢',
-      totalQuantity: 9200,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: 'مرحلة لاحقة بعد الانتهاء من الهيكل المعدني'
-    },
-    // 3. أعمال العزل
-    {
-      id: 'boq-6',
-      category: 'أعمال العزل',
-      statement: 'طبقة عازلة وجهين بيتومين على البارد للأساسات الملامسة للتربة',
-      unit: 'م٢',
-      totalQuantity: 2650,
-      executedQuantity: 50,
-      executionPercentage: 2,
-      notes: 'جاري عزل القواعد المصبوبة فور فك الشدات'
-    },
-    {
-      id: 'boq-7',
-      category: 'أعمال العزل',
-      statement: 'فرش بولي إيثيلين سمك 200 ميكرون أسفل القواعد والأرضيات',
-      unit: 'م٢',
-      totalQuantity: 9000,
-      executedQuantity: 200,
-      executionPercentage: 3,
-      notes: 'تم فرش المشمع أسفل القواعد العادية الجاري صبها'
-    },
-    // 4. أعمال المباني
-    {
-      id: 'boq-8',
-      category: 'أعمال المباني',
-      statement: 'توريد وعمل مباني طوب طفلي مفرغ أسمنتي',
-      unit: 'م٣',
-      totalQuantity: 850,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: 'مخطط البدء بعد الهيكل الإنشائي'
-    },
-    {
-      id: 'boq-9',
-      category: 'أعمال المباني',
-      statement: 'توريد وتركيب سفل من البازلت المقاوم للعوامل الجوية',
-      unit: 'م.ط',
-      totalQuantity: 560,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: 'مرحلة التشطيبات الخارجية'
-    },
-    // 5. أعمال البياض
-    {
-      id: 'boq-10',
-      category: 'أعمال البياض',
-      statement: 'أعمال المحارة والطرطشة للواجهات والأسوار الداخلية',
-      unit: 'م٢',
-      totalQuantity: 7000,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    {
-      id: 'boq-11',
-      category: 'أعمال البياض',
-      statement: 'أعمال السافيتو والتشطيبات الخارجية المقاومة للرطوبة',
-      unit: 'م٢',
-      totalQuantity: 3200,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    // 6. أعمال الدهانات
-    {
-      id: 'boq-12',
-      category: 'أعمال الدهانات',
-      statement: 'دهانات داخلية بلاستيكية مقاومة للغبار والزيوت',
-      unit: 'م٢',
-      totalQuantity: 4000,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    // 7. أعمال الأرضيات
-    {
-      id: 'boq-13',
-      category: 'أعمال الأرضيات',
-      statement: 'أعمال الإنترلوك للأفنية والممرات المحيطة بالهناجر',
-      unit: 'م٢',
-      totalQuantity: 5200,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    {
-      id: 'boq-14',
-      category: 'أعمال الأرضيات',
-      statement: 'أعمال البردورة الخرسانية وتحديد مسارات المعدات',
-      unit: 'م.ط',
-      totalQuantity: 560,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    {
-      id: 'boq-15',
-      category: 'أعمال الأرضيات',
-      statement: 'أعمال السيراميك والبورسلين لدورات المياه وغرف الإدارة',
-      unit: 'م٢',
-      totalQuantity: 145,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    // 8. أعمال السباكة
-    {
-      id: 'boq-16',
-      category: 'أعمال السباكة',
-      statement: 'سباكة متكاملة لعدد 3 دورات مياه ومغاسل',
-      unit: 'عدد',
-      totalQuantity: 3,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    {
-      id: 'boq-17',
-      category: 'أعمال السباكة',
-      statement: 'تغذية ومرافق وشبكات الصرف والتغذية الرئيسية',
-      unit: 'عدد بنود',
-      totalQuantity: 5,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    // 9. أعمال معدنية
-    {
-      id: 'boq-18',
-      category: 'أعمال معدنية',
-      statement: 'أبواب مصفحة وجرارة لزوم دخول الشاحنات للهنجر',
-      unit: 'عدد',
-      totalQuantity: 8,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    {
-      id: 'boq-19',
-      category: 'أعمال معدنية',
-      statement: 'مجرى مطر وجاليات تصريف السيول من الصاج المجلفن',
-      unit: 'م.ط',
-      totalQuantity: 110,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    {
-      id: 'boq-20',
-      category: 'أعمال معدنية',
-      statement: 'شبابيك ألوميتال وقطاعات تهوية صناعية',
-      unit: 'عدد',
-      totalQuantity: 38,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    // 10. أعمال خشبية
-    {
-      id: 'boq-21',
-      category: 'أعمال خشبية',
-      statement: 'أبواب خشبية مكسوة قشرة مقاومة للرطوبة',
-      unit: 'عدد',
-      totalQuantity: 42,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    // 11. أعمال الجمالون المعدني
-    {
-      id: 'boq-22',
-      category: 'أعمال الجمالون المعدني',
-      statement: 'توريد وتركيب الجمالون والقطاعات الفولاذية والأعمدة المعدنية',
-      unit: 'طن',
-      totalQuantity: 305,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: 'جاري التجهيز والتصنيع بالورش'
-    },
-    {
-      id: 'boq-23',
-      category: 'أعمال الجمالون المعدني',
-      statement: 'أعمال تغطيات الساندوتش بانل المعزول والصاج المعرج للأسقف والحوائط',
-      unit: 'م٢',
-      totalQuantity: 12900,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: 'التوريد بعد الانتهاء من الهيكل المعدني'
-    },
-    // 12. المرافق والكهرباء
-    {
-      id: 'boq-24',
-      category: 'أعمال المرافق والكهرباء',
-      statement: 'أعمال شبكة الكهرباء والإنارة الصناعية واللوحات التوزيعية',
-      unit: 'عدد بنود',
-      totalQuantity: 25,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    // 13. أعمال شبكة الحريق
-    {
-      id: 'boq-25',
-      category: 'أعمال شبكة الحريق',
-      statement: 'أعمال شبكة مكافحة الحريق والرشاشات الآلية وصناديق الحريق',
-      unit: 'عدد بنود',
-      totalQuantity: 20,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    },
-    // 14. أعمال معدات المغسلة
-    {
-      id: 'boq-26',
-      category: 'أعمال معدات المغسلة',
-      statement: 'توريد وتركيب وتشغيل معدات مغسلة المعدات الثقيلة والشاحنات',
-      unit: 'عدد بنود',
-      totalQuantity: 11,
-      executedQuantity: 0,
-      executionPercentage: 0,
-      notes: ''
-    }
-  ],
-  scheduleItems: [
-    {
-      id: 'sch-1',
-      taskIndex: 1,
-      statement: 'أعمال الحفر',
-      monthlyStatus: {
-        1: 'هنجر (1-2) + المغسلة',
-        2: 'هنجر المعدات',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: ''
-      }
-    },
-    {
-      id: 'sch-2',
-      taskIndex: 2,
-      statement: 'أعمال تطهير وضبط الحفر والردم والإحلال',
-      monthlyStatus: {
-        1: 'هنجر (1-2)',
-        2: 'المغسلة + هنجر المعدات',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: ''
-      }
-    },
-    {
-      id: 'sch-3',
-      taskIndex: 3,
-      statement: 'أعمال الخرسانة العادية لزوم الأساسات',
-      monthlyStatus: {
-        1: 'هنجر (1-2)',
-        2: 'المغسلة + هنجر المعدات',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: ''
-      }
-    },
-    {
-      id: 'sch-4',
-      taskIndex: 4,
-      statement: 'أعمال العزل للقواعد العادية',
-      monthlyStatus: {
-        1: 'هنجر (1-2)',
-        2: 'المغسلة + هنجر المعدات',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: ''
-      }
-    },
-    {
-      id: 'sch-5',
-      taskIndex: 5,
-      statement: 'أعمال الخرسانة المسلحة لزوم الأساسات',
-      monthlyStatus: {
-        1: '',
-        2: 'هنجر (1-2)',
-        3: 'المغسلة + هنجر المعدات',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: ''
-      }
-    },
-    {
-      id: 'sch-6',
-      taskIndex: 6,
-      statement: 'رقاب الأعمدة',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: 'هنجر (1-2)',
-        4: 'المغسلة + هنجر المعدات',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: ''
-      }
-    },
-    {
-      id: 'sch-7',
-      taskIndex: 7,
-      statement: 'مباني قصة الردم',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: '',
-        4: 'هنجر (1-2)',
-        5: 'المغسلة + هنجر المعدات',
-        6: '',
-        7: '',
-        8: '',
-        9: ''
-      }
-    },
-    {
-      id: 'sch-8',
-      taskIndex: 8,
-      statement: 'أعمال العزل للخرسانة المسلحة وقصة الردم',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: 'هنجر (1-2) + المغسلة',
-        6: 'هنجر المعدات',
-        7: '',
-        8: '',
-        9: ''
-      }
-    },
-    {
-      id: 'sch-9',
-      taskIndex: 9,
-      statement: 'الحفر الداخلي والردم',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: 'هنجر (1-2) + المغسلة',
-        6: 'هنجر المعدات',
-        7: '',
-        8: '',
-        9: ''
-      }
-    },
-    {
-      id: 'sch-10',
-      taskIndex: 10,
-      statement: 'التركيبات المعدنية والجمالونات',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: 'هنجر (1-2)',
-        7: 'هنجر المعدات + المغسلة',
-        8: '',
-        9: ''
-      }
-    },
-    {
-      id: 'sch-11',
-      taskIndex: 11,
-      statement: 'أعمال السور والطبانات',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: 'هنجر (1-2) والمحيط',
-        8: 'المغسلة + هنجر المعدات',
-        9: ''
-      }
-    },
-    {
-      id: 'sch-12',
-      taskIndex: 12,
-      statement: 'أعمال التغذية والصحية',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: 'هنجر (1-2) والمغسلة',
-        9: 'المغسلة + هنجر المعدات'
-      }
-    },
-    {
-      id: 'sch-13',
-      taskIndex: 13,
-      statement: 'أعمال الأرضيات والترابيع الخرسانية',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: 'هنجر (1-2)',
-        9: 'المغسلة + هنجر المعدات'
-      }
-    },
-    {
-      id: 'sch-14',
-      taskIndex: 14,
-      statement: 'أعمال التشطيبات والبياض والدهانات',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: 'هنجر (1-2) والمغسلة وهنجر المعدات'
-      }
-    },
-    {
-      id: 'sch-15',
-      taskIndex: 15,
-      statement: 'أعمال الكهرباء والإنارة',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: 'كامل المشروع بالتوازي'
-      }
-    },
-    {
-      id: 'sch-16',
-      taskIndex: 16,
-      statement: 'أعمال ميكانيكية وتهوية',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: 'كامل المشروع'
-      }
-    },
-    {
-      id: 'sch-17',
-      taskIndex: 17,
-      statement: 'أعمال مكافحة الحريق والإنذار',
-      monthlyStatus: {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: 'كامل المشروع والتجارب'
-      }
-    }
-  ],
+  boqItems: NEW_BOQ_ITEMS,
+  scheduleItems: UNIFIED_SCHEDULE_ITEMS,
   slides: [
     // Slide 1: Cover
     {
       id: 'slide-1',
       slideNumber: 1,
       type: 'cover',
-      title: 'الموقف التنفيذي لإنشاء عدد 2 هنجر 40*100 وهنجر اصلاح للمعدات 52*20 م ومغسلة للمعدات',
-      subTitle: 'الشركة الوطنية للأسمنت ببنى سويف - مجمع مصانع الشركة الوطنية للأسمنت ببنى سويف',
-      dateText: 'سبتمبر 2026'
+      title: 'مشروع إنشاء عدد (2) هنجر بمصنع الشكاير - عدد (1) هنجر بمصنع المعدات - عدد (1) مغسلة بمصنع المعدات',
+      subTitle: 'الشركة الوطنية للأسمنت ببنى سويف - مجمع مصانع الشركة الوطنية للأسمنت ببنى سويف - أمر إسناد رقم 24/2026',
+      dateText: 'أكتوبر 2026'
     },
     // Slide 2: Timeline & Duration
     {
       id: 'slide-2',
       slideNumber: 2,
       type: 'summary',
-      title: 'بيانات وتوقيتات المشروع الإنشائي',
-      subTitle: 'الموقف التنفيذي لإنشاء عدد 2 هنجر 40*100 وهنجر اصلاح للمعدات 52*20 م ومغسلة للمعدات'
+      title: 'بيانات وتوقيتات المشروع الإنشائي (مدة 5 أشهر)',
+      subTitle: 'مشروع إنشاء عدد (2) هنجر بمصنع الشكاير - عدد (1) هنجر بمصنع المعدات - عدد (1) مغسلة بمصنع المعدات'
     },
     // Slide 3: Gantt Schedule
     {
       id: 'slide-3',
       slideNumber: 3,
       type: 'timeline',
-      title: 'المخطط الزمني وفقاً للمقاول لإنشاء عدد 2 هنجر 40*100 وهنجر اصلاح للمعدات 52*20 م ومغسلة للمعدات من 2026/8/1 وحتي 2027/5/1',
-      subTitle: 'شركة الهلال للمقاولات العمومية - أمر إسناد رقم 24/2026 - مدة تنفيذ المشروع تسعة أشهر'
+      title: 'البرنامج الزمني المعتمد للمشروع (مدة تنفيذ خمسة أشهر من 2026/8/1 وحتى 2026/12/31)',
+      subTitle: 'شركة الهلال للمقاولات العمومية - أمر إسناد رقم 24/2026 - مدة تنفيذ المشروع خمسة أشهر'
     },
     // Slide 4: BOQ Part 1
     {
@@ -612,7 +68,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 6,
       type: 'photos',
       title: 'أعمال الحفر وضبط قاع الحفر بالهراس الميكانيكي',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'three-column',
       images: [
         {
@@ -641,7 +97,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 7,
       type: 'photos',
       title: 'أعمال التسوية وضبط المناسيب المساحية',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'two-column',
       images: [
         {
@@ -664,7 +120,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 8,
       type: 'photos',
       title: 'الغمر بالمياه لشرائح الحفر وطبقات الإحلال',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'single',
       images: [
         {
@@ -681,7 +137,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 9,
       type: 'photos',
       title: 'أعمال دمك شرائح الحفر وطبقات الإحلال بالهراس الاهتزازي',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'single',
       images: [
         {
@@ -698,7 +154,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 10,
       type: 'photos',
       title: 'أعمال اختبار طبقات التربة - اختبار بروكتور ومخروط الرمل (Sand Cone Test)',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'two-column',
       images: [
         {
@@ -721,7 +177,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 11,
       type: 'photos',
       title: 'استكمال اختبارات استلام طبقات التأسيس بواسطة مهندس ضبط الجودة',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'three-column',
       images: [
         {
@@ -750,7 +206,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 12,
       type: 'photos',
       title: 'توثيق نتائج اختبارات التربة بالموقع مع استشاري المشروع',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'two-column',
       images: [
         {
@@ -773,7 +229,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 13,
       type: 'photos',
       title: 'أعمال فرش مشمع البولي إيثيلين سمك 200 ميكرون',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'single',
       images: [
         {
@@ -790,7 +246,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 14,
       type: 'photos',
       title: 'أعمال الشدات الخشبية لزوم القواعد العادية',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'two-column',
       images: [
         {
@@ -813,7 +269,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 15,
       type: 'photos',
       title: 'أعمال صب الخرسانة العادية بواسطة مضخة الخرسانة وسيارات الخلاطة الجاهزة',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'two-column',
       images: [
         {
@@ -836,7 +292,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 16,
       type: 'photos',
       title: 'تمام صب القواعد العادية والبدء في أعمال المعالجة المائية',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'single',
       images: [
         {
@@ -853,7 +309,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 17,
       type: 'photos',
       title: 'أعمال عزل القواعد العادية (عزل بيتوميني وأسمنتي)',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'two-column',
       images: [
         {
@@ -876,7 +332,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 18,
       type: 'photos',
       title: 'أعمال حدادة ونجارة القواعد المسلحة والسملات الرابطة',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'two-column',
       images: [
         {
@@ -899,7 +355,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 19,
       type: 'photos',
       title: 'تجهيز قوالب مكعبات اختبار الخرسانة المسلحة وتثبيت أقفاص التسليح',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'three-column',
       images: [
         {
@@ -928,7 +384,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
       slideNumber: 20,
       type: 'photos',
       title: 'الموقف التنفيذي لأعمال القواعد المسلحة واستكمال الصب والعزل',
-      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى 2026/9/13',
+      subTitle: 'الأعمال التي تمت منذ بدء عملية الإنشاء بالهناجر حتى تاريخ اليوم (2026/10/15)',
       layout: 'two-column',
       images: [
         {
@@ -945,5 +401,7 @@ export const INITIAL_REPORT_DATA: ReportData = {
         }
       ]
     }
-  ]
+  ],
+  projectFiles: INITIAL_PROJECT_FILES,
+  customFileCategories: DEFAULT_FILE_CATEGORIES
 };

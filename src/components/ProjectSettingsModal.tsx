@@ -1,6 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ProjectInfo, ReportData } from '../types/report';
-import { X, Save, RotateCcw, Download, Upload, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { AcademyLogo } from './AcademyLogo';
+import { testCloudinaryConnection } from '../firebase/reportsService';
+import { 
+  X, 
+  Save, 
+  RotateCcw, 
+  Download, 
+  Upload, 
+  ShieldCheck, 
+  CheckCircle2, 
+  Image as ImageIcon,
+  Trash2,
+  Globe,
+  Radio,
+  AlertCircle
+} from 'lucide-react';
 
 interface ProjectSettingsModalProps {
   projectInfo: ProjectInfo;
@@ -10,6 +26,7 @@ interface ProjectSettingsModalProps {
   onResetToDefault: () => void;
   onExportData: () => void;
   onImportData: (data: ReportData) => void;
+  onConvertLocalImages?: () => void;
 }
 
 export const ProjectSettingsModal: React.FC<ProjectSettingsModalProps> = ({
@@ -19,12 +36,80 @@ export const ProjectSettingsModal: React.FC<ProjectSettingsModalProps> = ({
   onSave,
   onResetToDefault,
   onExportData,
-  onImportData
+  onImportData,
+  onConvertLocalImages
 }) => {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+
   const [form, setForm] = useState<ProjectInfo>({ ...projectInfo });
   const [importError, setImportError] = useState('');
+  const [isTestingCloudinary, setIsTestingCloudinary] = useState(false);
+  const [cloudinaryTestResult, setCloudinaryTestResult] = useState<{ success: boolean; message: string } | null>(null);
+  const logoInputRef = useRef<HTMLInputElement>(null);
+
+  const handleTestCloudinary = async () => {
+    if (!form.cloudinaryCloudName?.trim() || !form.cloudinaryUploadPreset?.trim()) {
+      setCloudinaryTestResult({
+        success: false,
+        message: 'يرجى كتابة اسم السحابة والـ Upload Preset أولاً للتحقق من الاتصال.'
+      });
+      return;
+    }
+
+    setIsTestingCloudinary(true);
+    setCloudinaryTestResult(null);
+    try {
+      const res = await testCloudinaryConnection(form.cloudinaryCloudName, form.cloudinaryUploadPreset);
+      setCloudinaryTestResult(res);
+    } catch (e: any) {
+      setCloudinaryTestResult({ success: false, message: e?.message || 'تعذر فحص الاتصال' });
+    } finally {
+      setIsTestingCloudinary(false);
+    }
+  };
 
   if (!isOpen) return null;
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 500;
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, w, h);
+            setForm((prev) => ({ ...prev, consultantLogoUrl: canvas.toDataURL('image/png', 0.9) }));
+          } else {
+            setForm((prev) => ({ ...prev, consultantLogoUrl: ev.target?.result as string }));
+          }
+        };
+        img.src = ev.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleResetLogo = () => {
+    setForm((prev) => ({ ...prev, consultantLogoUrl: '' }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,16 +141,22 @@ export const ProjectSettingsModal: React.FC<ProjectSettingsModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden text-right">
+      <div className={`border w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden text-right transition-colors duration-200 ${
+        isLight ? 'bg-white border-slate-300 text-slate-900' : 'bg-slate-900 border-slate-700 text-white'
+      }`}>
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/70">
+        <div className={`flex items-center justify-between px-6 py-4 border-b ${
+          isLight ? 'bg-slate-50 border-slate-200 text-slate-900' : 'bg-slate-950/70 border-slate-800 text-white'
+        }`}>
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-amber-400" />
-            <h3 className="font-bold text-lg text-white">إعدادات وبيانات التقرير الرسمية</h3>
+            <ShieldCheck className="w-5 h-5 text-amber-500" />
+            <h3 className="font-bold text-lg">إعدادات وبيانات التقرير الرسمية</h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition"
+            className={`p-1.5 rounded-lg transition cursor-pointer ${
+              isLight ? 'bg-slate-200 hover:bg-slate-300 text-slate-700' : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white'
+            }`}
           >
             <X className="w-5 h-5" />
           </button>
@@ -108,7 +199,7 @@ export const ProjectSettingsModal: React.FC<ProjectSettingsModalProps> = ({
             />
           </div>
 
-          {/* Contractor & Order */}
+          {/* Contractor & Consultant */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1">المقاول العام:</label>
@@ -128,6 +219,77 @@ export const ProjectSettingsModal: React.FC<ProjectSettingsModalProps> = ({
                 className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500"
               />
             </div>
+          </div>
+
+          {/* Consultant / Prepared By */}
+          <div className={`p-4 border rounded-2xl space-y-3 ${
+            isLight ? 'bg-blue-50/70 border-blue-200' : 'bg-slate-950/70 border-amber-500/30'
+          }`}>
+            <div className="flex items-center justify-between">
+              <label className={`block text-xs font-bold ${isLight ? 'text-blue-900' : 'text-amber-400'}`}>
+                الجهة الاستشارية المُعدة للتقرير والشعار المعتمد:
+              </label>
+              <div className="flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-blue-500" />
+                <span className="text-[10px] text-blue-500 font-bold">مرئي لجميع الزوار</span>
+              </div>
+            </div>
+
+            <input
+              type="text"
+              value={form.consultant || 'الأكاديمية العربية للعلوم والتكنولوجيا والنقل البحري - شركة الأكاديمية لتكنولوجيا المعلومات والاتصالات'}
+              onChange={(e) => setForm({ ...form, consultant: e.target.value })}
+              className={`w-full border rounded-lg px-3 py-2 text-xs font-semibold focus:outline-none focus:border-amber-500 ${
+                isLight ? 'bg-white border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-700 text-slate-200'
+              }`}
+            />
+
+            {/* Logo Preview & Upload Section */}
+            <div className={`p-3 rounded-xl border flex flex-col sm:flex-row items-center justify-between gap-3 ${
+              isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800'
+            }`}>
+              <div className="flex items-center gap-2.5">
+                <AcademyLogo 
+                  size="md" 
+                  showText={true} 
+                  customLogoUrl={form.consultantLogoUrl} 
+                />
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <input
+                  type="file"
+                  ref={logoInputRef}
+                  onChange={handleLogoUpload}
+                  accept="image/*"
+                  className="hidden"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => logoInputRef.current?.click()}
+                  className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Upload className="w-3.5 h-3.5" />
+                  رفع لوجو جديد
+                </button>
+
+                {form.consultantLogoUrl && (
+                  <button
+                    type="button"
+                    onClick={handleResetLogo}
+                    className="p-1.5 text-rose-500 hover:bg-rose-500/10 rounded-xl transition cursor-pointer"
+                    title="استعادة الشعار الأصلي (Vector SVG)"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <p className={`text-[11px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+              عند حفظ الإعدادات، سيتم اعتماد الشعار وتثبيته سحابياً ليظهر لجميع الزوار في ترويسة الموقع وغلاف التقرير.
+            </p>
           </div>
 
           {/* Dates & Duration */}
@@ -189,6 +351,90 @@ export const ProjectSettingsModal: React.FC<ProjectSettingsModalProps> = ({
               onChange={(e) => setForm({ ...form, overallProgress: Number(e.target.value) })}
               className="w-full accent-amber-500 cursor-pointer"
             />
+          </div>
+
+          {/* Cloudinary Cloud Storage Configuration */}
+          <div className="pt-4 border-t border-slate-800 space-y-3">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400">
+              <Globe className="w-4 h-4 text-amber-500" />
+              <span>إعدادات سحابة الصور (Cloudinary Cloud Storage):</span>
+            </div>
+            <p className={`text-[11px] ${isLight ? 'text-slate-500' : 'text-slate-400'} leading-relaxed`}>
+              تتيح لك سحابة Cloudinary رفع وتخزين الصور بروابط ويب مباشرة وموثوقة بدلاً من حفظها محلياً، مما يمنع تجاوز سعة التقرير السحابية ويضمن المزامنة فائقة السرعة مع الجوال. إذا تركتها فارغة، سيتم استخدام حساب افتراضي جاهز وآمن مجاناً!
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-300 mb-1">اسم السحابة (Cloud Name):</label>
+                <input
+                  type="text"
+                  value={form.cloudinaryCloudName || ''}
+                  onChange={(e) => {
+                    setForm({ ...form, cloudinaryCloudName: e.target.value });
+                    setCloudinaryTestResult(null);
+                  }}
+                  placeholder="مثال: my-cloud-name"
+                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500 font-mono"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-300 mb-1">إعدادات الرفع غير المشفر (Upload Preset):</label>
+                <input
+                  type="text"
+                  value={form.cloudinaryUploadPreset || ''}
+                  onChange={(e) => {
+                    setForm({ ...form, cloudinaryUploadPreset: e.target.value });
+                    setCloudinaryTestResult(null);
+                  }}
+                  placeholder="مثال: cement_reports (Unsigned)"
+                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500 font-mono"
+                />
+              </div>
+            </div>
+
+            {/* Test Connection Button & Result */}
+            <div className="flex flex-col gap-2 pt-1">
+              <button
+                type="button"
+                onClick={handleTestCloudinary}
+                disabled={isTestingCloudinary}
+                className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              >
+                <Radio className={`w-3.5 h-3.5 text-amber-400 ${isTestingCloudinary ? 'animate-pulse' : ''}`} />
+                <span>{isTestingCloudinary ? 'جاري فحص الاتصال بالسحابة...' : '🔍 فحص واختبار الاتصال بسحابة Cloudinary الآن'}</span>
+              </button>
+
+              {cloudinaryTestResult && (
+                <div className={`p-2.5 rounded-xl border text-xs flex items-start gap-2 ${
+                  cloudinaryTestResult.success
+                    ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-300'
+                    : 'bg-rose-950/40 border-rose-500/50 text-rose-300'
+                }`}>
+                  {cloudinaryTestResult.success ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  ) : (
+                    <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                  )}
+                  <span className="leading-relaxed">{cloudinaryTestResult.message}</span>
+                </div>
+              )}
+            </div>
+
+            {onConvertLocalImages && (
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (confirm('هل ترغب في تحويل كافة الصور المحلية السابقة (التي تستهلك المساحة) إلى روابط سحابية على Cloudinary الآن؟\n\nهذا سيفريغ مساحة التقرير بالكامل ويحل مشكلة المزامنة فوراً.')) {
+                      onConvertLocalImages();
+                      onClose();
+                    }
+                  }}
+                  className="px-4 py-2 w-full rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 text-xs font-black transition flex items-center justify-center gap-1.5 shadow-md shadow-amber-500/10 cursor-pointer"
+                >
+                  ⚡ تحويل وتفريغ صور التقرير القديمة إلى السحابة فوراً
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Backup & Restore Tools */}

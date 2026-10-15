@@ -50,14 +50,19 @@
   .print-page-break {
     page-break-after: always !important;
     break-after: page !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
-    overflow: hidden !important;
+    min-height: 100vh !important;
+    height: auto !important;
+  }
+
+  .overflow-y-auto, .overflow-x-auto {
+    overflow: visible !important;
+    max-height: none !important;
   }
 
   .presentation-slide-print {
     width: 100vw !important;
-    height: 100vh !important;
+    min-height: 100vh !important;
+    height: auto !important;
     box-shadow: none !important;
     border: none !important;
     margin: 0 !important;

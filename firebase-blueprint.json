@@ -1,0 +1,129 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile data",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "User UID from Firebase Auth"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "User avatar photo URL"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Account creation timestamp"
+        }
+      },
+      "required": ["id", "email"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "Executive project report presentation and BOQ data",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique report document ID"
+        },
+        "ownerId": {
+          "type": "string",
+          "description": "Owner UID who created the report"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Report title"
+        },
+        "projectTitle": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Full official project title"
+        },
+        "companyName": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Company name"
+        },
+        "overallProgress": {
+          "type": "number",
+          "description": "Total project execution percentage"
+        },
+        "reportDate": {
+          "type": "string",
+          "description": "Report cutoff date"
+        },
+        "reportData": {
+          "type": "string",
+          "description": "Serialized JSON string of full report data including slides, BOQ items, and timeline"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last updated timestamp"
+        }
+      },
+      "required": ["id", "ownerId", "title", "reportData"]
+    },
+    "SharedReport": {
+      "title": "SharedReport",
+      "description": "Publicly shared live project report state synchronized across all devices",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Document ID (e.g. master)"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp of update"
+        },
+        "updatedBy": {
+          "type": "string",
+          "description": "User or engineer who updated"
+        },
+        "projectTitle": {
+          "type": "string",
+          "description": "Project title"
+        },
+        "overallProgress": {
+          "type": "number",
+          "description": "Overall progress percentage"
+        },
+        "reportData": {
+          "type": "string",
+          "description": "Serialized JSON string of report data"
+        }
+      },
+      "required": ["id", "reportData"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of user profiles"
+    },
+    "/reports/{reportId}": {
+      "schema": "Report",
+      "description": "Collection of engineering executive reports"
+    },
+    "/shared_reports/{reportId}": {
+      "schema": "SharedReport",
+      "description": "Live master report synchronized across devices"
+    }
+  }
+}
